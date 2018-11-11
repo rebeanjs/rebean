@@ -1,0 +1,21 @@
+{
+  "name": "@rebean/snackbar",
+  "version": "0.0.1",
+  "description": "Redux snackbar bean",
+  "main": "lib/index.js",
+  "module": "lib/index.es.js",
+  "repository": "git@github.com:rebeanjs/rebean.git",
+  "author": "Piotr Oleś <piotr.oles@codibly.com>",
+  "license": "MIT",
+  "peerDependencies": {
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0",
+    "reselect": "^4.0.0"
+  },
+  "dependencies": {
+    "fast-memoize": "^2.5.1"
+  },
+  "devDependencies": {
+    "@types/uuid": "^3.4.4"
+  }
+}

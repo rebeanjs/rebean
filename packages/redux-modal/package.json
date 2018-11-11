@@ -1,0 +1,22 @@
+{
+  "name": "@rebean/redux-modal",
+  "version": "0.0.1",
+  "description": "Redux modal bean",
+  "main": "lib/index.js",
+  "module": "lib/index.es.js",
+  "typings": "lib/index.d.ts",
+  "repository": "git@github.com:rebeanjs/rebean.git",
+  "author": "Piotr Oleś <piotr.oles@codibly.com>",
+  "license": "MIT",
+  "files": [
+    "lib",
+    "README.md"
+  ],
+  "peerDependencies": {
+    "reselect": "^4.0.0"
+  },
+  "dependencies": {
+    "fast-memoize": "^2.5.1"
+  },
+  "devDependencies": {}
+}

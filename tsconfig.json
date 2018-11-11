@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "module": "esnext",
+    "sourceMap": true,
+    "strict": true,
+    "declaration": true,
+    "lib": ["scripthost", "es5", "es6", "dom"],
+    "moduleResolution": "node"
+  }
+}
