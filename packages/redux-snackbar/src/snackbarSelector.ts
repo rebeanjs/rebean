@@ -8,18 +8,18 @@ type SnackbarStateAware = Partial<SnackbarState> & { [key: string]: any };
 export const getRegisteredSnackbars: Selector<SnackbarStateAware, Snackbar[]> = state =>
   (state && state.snackbar && state.snackbar.registered) || [];
 
-export const getOpenedSnackbarId: Selector<
+const getOpenedSnackbarId: Selector<
   SnackbarStateAware,
   Snackbar['id'] | undefined
 > = state => (state && state.snackbar && state.snackbar.opened) || undefined;
 
-export const getClosedSnackbarIds: Selector<SnackbarStateAware, Snackbar['id'][]> = state =>
+const getClosedSnackbarIds: Selector<SnackbarStateAware, Snackbar['id'][]> = state =>
   (state && state.snackbar && state.snackbar.closed) || [];
 
 export const getOpenedSnackbar = createSelector(
   getRegisteredSnackbars,
   getOpenedSnackbarId,
-  (snackbars, openedId) => snackbars.find(snackbar => snackbar.id === openedId)
+  (snackbars, openedId) => snackbars.filter(snackbar => snackbar.id === openedId)[0]
 );
 
 export const getQueuedSnackbars = createSelector(
@@ -47,7 +47,7 @@ export const getNextSnackbar = createSelector(
 
 export const getSnackbar = memoize((id: Snackbar['id']) =>
   createSelector(getRegisteredSnackbars, snackbars =>
-    snackbars.find(snackbar => snackbar.id === id)
+    snackbars.filter(snackbar => snackbar.id === id)[0]
   )
 ) as (id: Snackbar['id']) => Selector<SnackbarStateAware, Snackbar | undefined>;
 

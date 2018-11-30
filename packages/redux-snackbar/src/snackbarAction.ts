@@ -11,7 +11,7 @@ import { uuid } from './uuid';
 
 export const SNACKBAR_REGISTERED = '@@redux-snackbar/SNACKBAR_REGISTERED';
 export type SnackbarRegisteredAction = {
-  type: '@@redux-snackbar/SNACKBAR_REGISTERED';
+  type: typeof SNACKBAR_REGISTERED;
   payload?: Snackbar;
 };
 export const snackbarRegistered = (snackbar: Snackbar): SnackbarRegisteredAction => ({
@@ -21,7 +21,7 @@ export const snackbarRegistered = (snackbar: Snackbar): SnackbarRegisteredAction
 
 export const SNACKBAR_OPENED = '@@redux-snackbar/SNACKBAR_OPENED';
 export type SnackbarOpenedAction = {
-  type: '@@redux-snackbar/SNACKBAR_OPENED';
+  type: typeof SNACKBAR_OPENED;
   payload?: { id: Snackbar['id']; timeoutId?: number };
 };
 export const snackbarOpened = (id: Snackbar['id'], timeoutId?: number): SnackbarOpenedAction => ({
@@ -31,7 +31,7 @@ export const snackbarOpened = (id: Snackbar['id'], timeoutId?: number): Snackbar
 
 export const SNACKBAR_CLOSED = '@@redux-snackbar/SNACKBAR_CLOSED';
 export type SnackbarClosedAction = {
-  type: '@@redux-snackbar/SNACKBAR_CLOSED';
+  type: typeof SNACKBAR_CLOSED;
   payload?: Snackbar['id'];
 };
 export const snackbarClosed = (id: Snackbar['id']): SnackbarClosedAction => ({
@@ -41,7 +41,7 @@ export const snackbarClosed = (id: Snackbar['id']): SnackbarClosedAction => ({
 
 export const SNACKBAR_UNREGISTERED = '@@redux-snackbar/SNACKBAR_UNREGISTERED';
 export type SnackbarUnregisteredAction = {
-  type: '@@redux-snackbar/SNACKBAR_UNREGISTERED';
+  type: typeof SNACKBAR_UNREGISTERED;
   payload?: Snackbar['id'];
 };
 export const snackbarUnregistered = (id: Snackbar['id']): SnackbarUnregisteredAction => ({

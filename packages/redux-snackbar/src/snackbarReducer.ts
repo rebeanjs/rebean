@@ -8,7 +8,7 @@ import {
 import { SnackbarAwareState, SnackbarState } from './SnackbarState';
 import { Reducer } from 'redux';
 
-const initialDomain: SnackbarState.Domain = {
+const initialDomain: SnackbarState['snackbar'] = {
   registered: [],
   opened: undefined,
   closed: []
@@ -18,7 +18,7 @@ const initialState: SnackbarState = {
   snackbar: initialDomain
 };
 
-const snackbarDomainReducer: Reducer<SnackbarState.Domain> = (
+const snackbarDomainReducer: Reducer<SnackbarState['snackbar']> = (
   state = initialDomain,
   action: Actions
 ) => {

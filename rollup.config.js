@@ -4,6 +4,7 @@ const cleaner = require('rollup-plugin-cleaner');
 
 const path = require('path');
 const fs = require('fs');
+const process = require('process');
 
 const isDirectory = source => fs.lstatSync(source).isDirectory();
 const getDirectories = source => fs.readdirSync(source).map(name => path.join(source, name)).filter(isDirectory);
@@ -12,7 +13,7 @@ const packagesDirs = getDirectories(__dirname + '/packages');
 
 const validPackages = packagesDirs
   .filter(pkgPath => fs.existsSync(pkgPath + '/package.json'))
-  .map(pkgPath => ({ path: pkgPath, meta: require(pkgPath + '/package.json') }))
+  .map(pkgPath => ({ path: path.relative(process.cwd(), pkgPath), meta: require(pkgPath + '/package.json') }))
   .filter((pkg) => pkg.meta.main && pkg.meta.module);
 
 console.log(`${validPackages.length} / ${packagesDirs.length} packages contains valid package.json file`);

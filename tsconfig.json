@@ -1,11 +1,14 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "esnext",
+    "module": "es6",
     "sourceMap": true,
     "strict": true,
     "declaration": true,
-    "lib": ["scripthost", "es5", "es6", "dom"],
+    "lib": ["scripthost", "es5", "dom"],
     "moduleResolution": "node"
-  }
+  },
+  "exclude": [
+    "**/*.spec.ts"
+  ]
 }
