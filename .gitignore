@@ -25,6 +25,7 @@ node_modules/
 
 # Builds
 packages/**/lib
+packages/**/doc
 
 # Rollup cache
 .rpt2_cache

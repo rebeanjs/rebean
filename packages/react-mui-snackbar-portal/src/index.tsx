@@ -1,6 +1,6 @@
 import MuiSnackbar from 'material-ui/Snackbar';
 import * as React from 'react';
-import { ComponentClass, SFC } from 'react';
+import { ComponentClass, Component, SFC } from 'react';
 import { connect } from 'react-redux';
 import {
   Snackbar,
@@ -9,7 +9,7 @@ import {
   closeSnackbar,
   getRegisteredSnackbars,
   getOpenedSnackbarId
-} from '@proto-api/redux-snackbar';
+} from '@rebean/redux-snackbar';
 import { ThunkDispatch } from 'redux-thunk';
 
 export namespace SnackbarPortal {
@@ -46,3 +46,16 @@ export const SnackbarPortal = connect(
     onClose: (id: Snackbar['id']) => dispatch(closeSnackbar(id))
   })
 )(SnackbarPortalPure) as ComponentClass<SnackbarPortal.OwnProps>;
+
+
+const SomeComponentPure = ({ text, onClick }) =>
+  <div onClick={onClick}>{ text }</div>;
+
+const SomeComponent = (props) => {
+  const openSnackbar = useSnackbar();
+
+  return <SomeComponentPure
+    {...props}
+    onClick={() => openSnackbar('Yeee!')}
+  />
+}

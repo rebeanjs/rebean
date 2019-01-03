@@ -1,5 +1,5 @@
 {
-  "name": "@rebean/redux-snackbar",
+  "name": "@rebean/react-mui-snackbar-portal",
   "version": "0.0.1",
   "description": "Redux snackbar bean",
   "main": "lib/index.js",
