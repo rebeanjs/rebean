@@ -21,5 +21,9 @@
   },
   "devDependencies": {
     "@types/uuid": "^3.4.4"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
   }
 }

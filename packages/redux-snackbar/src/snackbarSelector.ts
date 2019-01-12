@@ -1,56 +1,113 @@
-import { createSelector, Selector } from 'reselect';
-import { SnackbarState } from './SnackbarState';
-import { Snackbar } from './Snackbar';
 import memoize from 'fast-memoize';
+import { createSelector, Selector } from 'reselect';
+import { Snackbar } from './Snackbar';
+import {
+  DefaultSnackbarAwareState,
+  defaultSnackbarKey,
+  SnackbarState,
+} from './SnackbarState';
 
-type SnackbarStateAware = Partial<SnackbarState> & { [key: string]: any };
+export function createSnackbarSelectors<T extends object = any>(key: keyof T) {
+  // tslint:disable:no-shadowed-variable
+  const getSnackbarState: Selector<T, SnackbarState> = state =>
+    ((state && state[key]) as any) || undefined;
 
-export const getRegisteredSnackbars: Selector<SnackbarStateAware, Snackbar[]> = state =>
-  (state && state.snackbar && state.snackbar.registered) || [];
+  const getQueuedSnackbars = createSelector(
+    getSnackbarState,
+    state => (state && state.queued) || [],
+  );
 
-const getOpenedSnackbarId: Selector<
-  SnackbarStateAware,
-  Snackbar['id'] | undefined
-> = state => (state && state.snackbar && state.snackbar.opened) || undefined;
+  const getOpenedSnackbarId = createSelector(
+    getSnackbarState,
+    state => (state && state.opened) || undefined,
+  );
 
-const getClosedSnackbarIds: Selector<SnackbarStateAware, Snackbar['id'][]> = state =>
-  (state && state.snackbar && state.snackbar.closed) || [];
+  const getClosedSnackbarIds = createSelector(
+    getSnackbarState,
+    state => (state && state.closed) || [],
+  );
 
-export const getOpenedSnackbar = createSelector(
-  getRegisteredSnackbars,
-  getOpenedSnackbarId,
-  (snackbars, openedId) => snackbars.filter(snackbar => snackbar.id === openedId)[0]
-);
+  const getOpenedSnackbar = createSelector(
+    getQueuedSnackbars,
+    getOpenedSnackbarId,
+    (snackbars, openedId) =>
+      snackbars.filter(snackbar => snackbar.id === openedId)[0],
+  );
 
-export const getQueuedSnackbars = createSelector(
-  getRegisteredSnackbars,
+  const getAwaitingSnackbars = createSelector(
+    getQueuedSnackbars,
+    getOpenedSnackbarId,
+    getClosedSnackbarIds,
+    (snackbars, openedId, closedIds) =>
+      snackbars.filter(snackbar => {
+        const isOpened = snackbar.id === openedId;
+        const isClosed = closedIds.indexOf(snackbar.id) !== -1;
+
+        return !isOpened && !isClosed;
+      }),
+  );
+
+  const isSnackbarOpened = createSelector(
+    getOpenedSnackbarId,
+    openedId => openedId !== undefined,
+  );
+
+  const getNextSnackbar = createSelector(
+    getAwaitingSnackbars,
+    snackbars => snackbars[0],
+  );
+
+  const getSnackbar = memoize((id: Snackbar['id']) =>
+    createSelector(
+      getQueuedSnackbars,
+      snackbars => snackbars.filter(snackbar => snackbar.id === id)[0],
+    ),
+  );
+
+  const isSnackbarUnique = memoize((message: string) =>
+    createSelector(
+      getOpenedSnackbar,
+      snackbar => !snackbar || snackbar.message !== message,
+    ),
+  );
+  // tslint:enable:no-shadowed-variable
+
+  return {
+    getSnackbarState,
+    getQueuedSnackbars,
+    getOpenedSnackbarId,
+    getClosedSnackbarIds,
+    getOpenedSnackbar,
+    getAwaitingSnackbars,
+    isSnackbarOpened,
+    getNextSnackbar,
+    getSnackbar,
+    isSnackbarUnique,
+  };
+}
+
+const {
+  getSnackbarState,
+  getQueuedSnackbars,
   getOpenedSnackbarId,
   getClosedSnackbarIds,
-  (snackbars, openedId, closedIds) =>
-    snackbars.filter(snackbar => {
-      const isOpened = snackbar.id === openedId;
-      const isClosed = closedIds.indexOf(snackbar.id) !== -1;
+  getOpenedSnackbar,
+  getAwaitingSnackbars,
+  isSnackbarOpened,
+  getNextSnackbar,
+  getSnackbar,
+  isSnackbarUnique,
+} = createSnackbarSelectors<DefaultSnackbarAwareState>(defaultSnackbarKey);
 
-      return !isOpened && !isClosed;
-    })
-);
-
-export const isSnackbarOpened = createSelector(
-  getOpenedSnackbarId,
-  openedId => openedId !== undefined
-);
-
-export const getNextSnackbar = createSelector(
+export {
+  getSnackbarState,
   getQueuedSnackbars,
-  snackbars => (snackbars.length ? snackbars[0] : undefined)
-);
-
-export const getSnackbar = memoize((id: Snackbar['id']) =>
-  createSelector(getRegisteredSnackbars, snackbars =>
-    snackbars.filter(snackbar => snackbar.id === id)[0]
-  )
-) as (id: Snackbar['id']) => Selector<SnackbarStateAware, Snackbar | undefined>;
-
-export const isSnackbarUnique = memoize((message: string) =>
-  createSelector(getOpenedSnackbar, snackbar => !snackbar || snackbar.message !== message)
-) as (message: string) => Selector<SnackbarStateAware, boolean>;
+  getOpenedSnackbarId,
+  getClosedSnackbarIds,
+  getOpenedSnackbar,
+  getAwaitingSnackbars,
+  isSnackbarOpened,
+  getNextSnackbar,
+  getSnackbar,
+  isSnackbarUnique,
+};
