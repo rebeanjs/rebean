@@ -1,16 +1,15 @@
-
 import {
-  snackbarQueued,
-  snackbarOpened,
-  snackbarClosed,
-  snackbarRemoved,
-  openSnackbar,
-  SNACKBAR_QUEUED,
-  SNACKBAR_OPENED,
-  SNACKBAR_CLOSED,
-  SNACKBAR_REMOVED,
   closeSnackbar,
-  DefaultSnackbarAwareState
+  DefaultSnackbarAwareState,
+  openSnackbar,
+  SNACKBAR_CLOSED,
+  SNACKBAR_OPENED,
+  SNACKBAR_QUEUED,
+  SNACKBAR_REMOVED,
+  snackbarClosed,
+  snackbarOpened,
+  snackbarQueued,
+  snackbarRemoved,
 } from '@rebean/redux-snackbar';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
@@ -18,7 +17,6 @@ import thunk from 'redux-thunk';
 jest.useFakeTimers();
 
 describe('SnackbarAction', () => {
-
   const mockStore = configureStore<any, any>([thunk]);
 
   it('should create SNACKBAR_QUEUED action', () => {
@@ -26,87 +24,83 @@ describe('SnackbarAction', () => {
     expect(
       snackbarQueued({
         id: 'some_unique_id',
-        message: 'Hello world'
-      })
+        message: 'Hello world',
+      }),
     ).toEqual({
       type: '@@redux-snackbar/SNACKBAR_QUEUED',
       payload: {
         id: 'some_unique_id',
-        message: 'Hello world'
-      }
+        message: 'Hello world',
+      },
     });
     expect(
       snackbarQueued({
         id: 'some_unique_id',
         message: 'Hello world',
         timeout: 5000,
-        timeoutId: 6432
-      })
+        timeoutId: 6432,
+      }),
     ).toEqual({
       type: '@@redux-snackbar/SNACKBAR_QUEUED',
       payload: {
         id: 'some_unique_id',
         message: 'Hello world',
         timeout: 5000,
-        timeoutId: 6432
-      }
+        timeoutId: 6432,
+      },
     });
   });
 
   it('should create SNACKBAR_OPENED action', () => {
     expect(snackbarOpened).toBeDefined();
-    expect(
-      snackbarOpened('some_unique_id')
-    ).toEqual({
+    expect(snackbarOpened('some_unique_id')).toEqual({
       type: '@@redux-snackbar/SNACKBAR_OPENED',
       payload: {
-        id: 'some_unique_id'
-      }
+        id: 'some_unique_id',
+      },
     });
-    expect(
-      snackbarOpened('another_unique_id', 6432)
-    ).toEqual({
+    expect(snackbarOpened('another_unique_id', 6432)).toEqual({
       type: '@@redux-snackbar/SNACKBAR_OPENED',
       payload: {
         id: 'another_unique_id',
-        timeoutId: 6432
-      }
-    })
+        timeoutId: 6432,
+      },
+    });
   });
 
   it('should create SNACKBAR_CLOSED action', () => {
     expect(snackbarClosed).toBeDefined();
     expect(snackbarClosed('another_unique_id')).toEqual({
       type: '@@redux-snackbar/SNACKBAR_CLOSED',
-      payload: 'another_unique_id'
-    })
+      payload: 'another_unique_id',
+    });
   });
 
   it('should create SNACKBAR_REMOVED action', () => {
     expect(snackbarRemoved).toBeDefined();
     expect(snackbarRemoved('some_unique_id')).toEqual({
       type: '@@redux-snackbar/SNACKBAR_REMOVED',
-      payload: 'some_unique_id'
-    })
+      payload: 'some_unique_id',
+    });
   });
 
   it('should queue and schedule snackbar on openSnackbar action', () => {
     expect(openSnackbar).toBeDefined();
 
-    let state: DefaultSnackbarAwareState | undefined = undefined;
+    let state: DefaultSnackbarAwareState | undefined;
     const store = mockStore(() => state);
 
     const id = store.dispatch(openSnackbar('Test message', 5000));
     const snackbar = {
       id,
       message: 'Test message',
-      timeout: 5000
+      timeout: 5000,
     };
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_QUEUED,
-        payload: snackbar
-      }
+        payload: snackbar,
+      },
     ]);
 
     store.clearActions();
@@ -114,8 +108,8 @@ describe('SnackbarAction', () => {
       snackbar: {
         queued: [snackbar],
         opened: undefined,
-        closed: []
-      }
+        closed: [],
+      },
     };
     jest.runOnlyPendingTimers();
     expect(store.getActions()).toEqual([
@@ -123,9 +117,9 @@ describe('SnackbarAction', () => {
         type: SNACKBAR_OPENED,
         payload: {
           id: snackbar.id,
-          timeoutId: expect.anything()
-        }
-      }
+          timeoutId: expect.anything(),
+        },
+      },
     ]);
 
     store.clearActions();
@@ -133,8 +127,8 @@ describe('SnackbarAction', () => {
       snackbar: {
         queued: [snackbar],
         opened: snackbar.id,
-        closed: []
-      }
+        closed: [],
+      },
     };
     jest.advanceTimersByTime(3000);
     expect(store.getActions()).toEqual([]);
@@ -143,8 +137,8 @@ describe('SnackbarAction', () => {
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_CLOSED,
-        payload: snackbar.id
-      }
+        payload: snackbar.id,
+      },
     ]);
 
     store.clearActions();
@@ -152,8 +146,8 @@ describe('SnackbarAction', () => {
       snackbar: {
         queued: [snackbar],
         opened: undefined,
-        closed: [snackbar.id]
-      }
+        closed: [snackbar.id],
+      },
     };
     jest.advanceTimersByTime(500);
     expect(store.getActions()).toEqual([]);
@@ -162,13 +156,13 @@ describe('SnackbarAction', () => {
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_REMOVED,
-        payload: snackbar.id
-      }
+        payload: snackbar.id,
+      },
     ]);
   });
 
   it('should not queue and schedule snackbar on openSnackbar action if snackbar is not unique', () => {
-    let state: DefaultSnackbarAwareState | undefined = undefined;
+    let state: DefaultSnackbarAwareState | undefined;
     const store = mockStore(() => state);
 
     state = {
@@ -177,17 +171,17 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000
+            timeout: 3000,
           },
           {
             id: '2',
             message: 'Another message',
-            timeout: 2000
-          }
+            timeout: 2000,
+          },
         ],
         opened: '1',
-        closed: []
-      }
+        closed: [],
+      },
     };
 
     const firstId = store.dispatch(openSnackbar('Some message'));
@@ -202,14 +196,14 @@ describe('SnackbarAction', () => {
         payload: {
           id: secondId,
           message: 'Another message',
-          timeout: 5000
-        }
-      }
+          timeout: 5000,
+        },
+      },
     ]);
   });
 
   it('should queue and schedule snackbar on openSnackbar action even if snackbar is not unique', () => {
-    let state: DefaultSnackbarAwareState | undefined = undefined;
+    let state: DefaultSnackbarAwareState | undefined;
     const store = mockStore(() => state);
 
     state = {
@@ -218,17 +212,17 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000
+            timeout: 3000,
           },
           {
             id: '2',
             message: 'Another message',
-            timeout: 2000
-          }
+            timeout: 2000,
+          },
         ],
         opened: '1',
-        closed: []
-      }
+        closed: [],
+      },
     };
 
     const firstId = store.dispatch(openSnackbar('Some message', 5000, false));
@@ -239,14 +233,14 @@ describe('SnackbarAction', () => {
         payload: {
           id: firstId,
           message: 'Some message',
-          timeout: 5000
-        }
-      }
+          timeout: 5000,
+        },
+      },
     ]);
   });
 
   it('should not schedule snackbar immediately on openSnackbar action if some snackbar is opened', () => {
-    let state: DefaultSnackbarAwareState | undefined = undefined;
+    let state: DefaultSnackbarAwareState | undefined;
     const store = mockStore(() => state);
 
     state = {
@@ -255,12 +249,12 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000
-          }
+            timeout: 3000,
+          },
         ],
         opened: '1',
-        closed: []
-      }
+        closed: [],
+      },
     };
 
     const firstId = store.dispatch(openSnackbar('Another message'));
@@ -271,9 +265,9 @@ describe('SnackbarAction', () => {
         payload: {
           id: firstId,
           message: 'Another message',
-          timeout: 5000
-        }
-      }
+          timeout: 5000,
+        },
+      },
     ]);
 
     store.clearActions();
@@ -283,25 +277,25 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000
+            timeout: 3000,
           },
           {
             id: firstId,
             message: 'Another message',
-            timeout: 5000
-          }
+            timeout: 5000,
+          },
         ],
         opened: '1',
-        closed: []
-      }
+        closed: [],
+      },
     };
     jest.runOnlyPendingTimers();
     expect(store.getActions()).toEqual([]);
   });
 
   it('should close snackbar and schedule snackbar remove on closeSnackbar action', () => {
-    let state: DefaultSnackbarAwareState | undefined = undefined;
-    let timeoutSpy = jest.fn();
+    let state: DefaultSnackbarAwareState | undefined;
+    const timeoutSpy = jest.fn();
     const store = mockStore(() => state);
     const timeoutId = setTimeout(timeoutSpy, 500);
 
@@ -312,19 +306,19 @@ describe('SnackbarAction', () => {
             id: '1',
             message: 'Some message',
             timeout: 3000,
-            timeoutId
-          }
+            timeoutId,
+          },
         ],
         opened: '1',
-        closed: []
-      }
+        closed: [],
+      },
     };
     store.dispatch(closeSnackbar('1'));
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_CLOSED,
-        payload: '1'
-      }
+        payload: '1',
+      },
     ]);
 
     store.clearActions();
@@ -333,13 +327,13 @@ describe('SnackbarAction', () => {
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_REMOVED,
-        payload: '1'
-      }
+        payload: '1',
+      },
     ]);
   });
 
   it('should schedule next snackbar on closeSnackbar action', () => {
-    let state: DefaultSnackbarAwareState | undefined = undefined;
+    let state: DefaultSnackbarAwareState | undefined;
     const store = mockStore(() => state);
 
     state = {
@@ -348,30 +342,30 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000
+            timeout: 3000,
           },
           {
             id: '2',
-            message: 'Another message'
-          }
+            message: 'Another message',
+          },
         ],
         opened: '1',
-        closed: []
-      }
+        closed: [],
+      },
     };
     store.dispatch(closeSnackbar('1'));
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_CLOSED,
-        payload: '1'
+        payload: '1',
       },
       {
         type: SNACKBAR_OPENED,
         payload: {
           id: '2',
-          timeoutId: undefined
-        }
-      }
+          timeoutId: undefined,
+        },
+      },
     ]);
 
     store.clearActions();
@@ -381,24 +375,24 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000
+            timeout: 3000,
           },
           {
             id: '2',
             message: 'Another message',
-            timeout: 5000
-          }
+            timeout: 5000,
+          },
         ],
         opened: '2',
-        closed: ['1']
-      }
+        closed: ['1'],
+      },
     };
     jest.advanceTimersByTime(1000);
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_REMOVED,
-        payload: '1'
-      }
+        payload: '1',
+      },
     ]);
 
     store.clearActions();
@@ -407,7 +401,7 @@ describe('SnackbarAction', () => {
   });
 
   it('should do nothing on closeSnackbar action if snackbar does not exists', () => {
-    let state: DefaultSnackbarAwareState | undefined = undefined;
+    let state: DefaultSnackbarAwareState | undefined;
     const store = mockStore(() => state);
 
     state = {
@@ -416,12 +410,12 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000
-          }
+            timeout: 3000,
+          },
         ],
         opened: '1',
-        closed: []
-      }
+        closed: [],
+      },
     };
     store.dispatch(closeSnackbar('2'));
     expect(store.getActions()).toEqual([]);
@@ -432,15 +426,14 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000
-          }
+            timeout: 3000,
+          },
         ],
         opened: undefined,
-        closed: []
-      }
+        closed: [],
+      },
     };
     store.dispatch(closeSnackbar('2'));
     expect(store.getActions()).toEqual([]);
   });
-
 });

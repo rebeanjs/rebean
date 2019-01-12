@@ -1,9 +1,11 @@
 import {
   DefaultSnackbarAwareState,
-  Snackbar, SNACKBAR_OPENED, SNACKBAR_QUEUED,
+  Snackbar,
+  SNACKBAR_OPENED,
+  SNACKBAR_QUEUED,
   snackbarOpened,
   snackbarQueued,
-  snackbarReducer
+  snackbarReducer,
 } from '@rebean/redux-snackbar';
 
 describe('SnackbarReducer', () => {
@@ -15,14 +17,14 @@ describe('SnackbarReducer', () => {
       snackbar: {
         queued: [],
         opened: undefined,
-        closed: []
-      }
+        closed: [],
+      },
     };
     snackbar = {
       id: '1',
       message: 'Test',
-      timeout: 1000
-    }
+      timeout: 1000,
+    };
   });
 
   it('should add snackbar to the queued on SNACKBAR_QUEUED action from undefined state', () => {
@@ -34,8 +36,8 @@ describe('SnackbarReducer', () => {
       snackbar: {
         queued: [snackbar],
         opened: undefined,
-        closed: []
-      }
+        closed: [],
+      },
     });
   });
 
@@ -52,8 +54,8 @@ describe('SnackbarReducer', () => {
       snackbar: {
         queued: [snackbar],
         opened: undefined,
-        closed: []
-      }
+        closed: [],
+      },
     };
     const action = snackbarOpened(snackbar.id);
     const nextState = snackbarReducer(prevState, action);
@@ -62,8 +64,8 @@ describe('SnackbarReducer', () => {
       snackbar: {
         queued: [snackbar],
         opened: snackbar.id,
-        closed: []
-      }
+        closed: [],
+      },
     });
     expect(nextState.snackbar!.queued).toBe(prevState.snackbar.queued);
     expect(nextState.snackbar!.closed).toBe(prevState.snackbar.closed);
@@ -74,8 +76,8 @@ describe('SnackbarReducer', () => {
       snackbar: {
         queued: [snackbar],
         opened: undefined,
-        closed: []
-      }
+        closed: [],
+      },
     };
     const action = snackbarOpened(snackbar.id, 123);
     const nextState = snackbarReducer(prevState, action);
@@ -85,12 +87,12 @@ describe('SnackbarReducer', () => {
         queued: [
           {
             ...snackbar,
-            timeoutId: 123
-          }
+            timeoutId: 123,
+          },
         ],
         opened: snackbar.id,
-        closed: []
-      }
+        closed: [],
+      },
     });
     expect(nextState.snackbar!.closed).toBe(prevState.snackbar.closed);
   });
@@ -103,5 +105,5 @@ describe('SnackbarReducer', () => {
     expect(nextState).toBe(prevState);
   });
 
-  it('should unset snackbar id as opened and ')
+  it('should unset snackbar id as opened and ');
 });

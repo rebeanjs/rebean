@@ -1,15 +1,4 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "module": "es6",
-    "jsx": "react",
-    "sourceMap": true,
-    "strict": true,
-    "declaration": true,
-    "lib": ["scripthost", "es5", "dom"],
-    "moduleResolution": "node"
-  },
-  "exclude": [
-    "**/*.spec.ts"
-  ]
+  "extends": "tsconfig.base.json",
+  "exclude": ["**/*.spec.ts"]
 }

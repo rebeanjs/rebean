@@ -1,7 +1,7 @@
 import { ThunkAction } from 'redux-thunk';
 import { Snackbar } from './Snackbar';
 import { createSnackbarSelectors } from './snackbarSelector';
-import { DefaultSnackbarAwareState, defaultSnackbarKey} from './SnackbarState';
+import { DefaultSnackbarAwareState, defaultSnackbarKey } from './SnackbarState';
 
 /**
  * Internal function to compute UUIDv4
@@ -11,14 +11,16 @@ function uuid() {
 
   for (let i = 0; i < 32; i++) {
     // tslint:disable-next-line
-    const random = Math.random() * 16 | 0;
+    const random = (Math.random() * 16) | 0;
 
     if (i === 8 || i === 12 || i === 16 || i === 20) {
       unique += '-';
     }
 
     // tslint:disable-next-line
-    unique += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random)).toString(16);
+    unique += (i === 12 ? 4 : i === 16 ? (random & 3) | 8 : random).toString(
+      16,
+    );
   }
 
   return unique;
@@ -74,7 +76,10 @@ export function createSnackbarActions<T extends object = any>(key: keyof T) {
   /**
    * Creates action that opens queued snackbar.
    */
-  const snackbarOpened = (id: Snackbar['id'], timeoutId?: any): SnackbarOpenedAction => ({
+  const snackbarOpened = (
+    id: Snackbar['id'],
+    timeoutId?: any,
+  ): SnackbarOpenedAction => ({
     type: SNACKBAR_OPENED,
     payload: { id, timeoutId },
   });
