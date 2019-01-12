@@ -6,20 +6,32 @@
   "repository": "git@github.com:rebeanjs/rebean.git",
   "author": "Piotr Oleś <piotr.oles@codibly.com>",
   "license": "MIT",
-  "private": true,
   "scripts": {
     "build": "rollup -c",
     "test": "jest",
-    "doc": "typedoc --out packages/redux-snackbar/doc packages/redux-snackbar/src --mode file --excludePrivate --excludeProtected"
+    "lint": "tslint --project tsconfig.json",
+    "format": "prettier --write",
+    "doc": "typedoc --out doc/api packages/ --mode file"
   },
   "workspaces": [
     "packages/*"
   ],
+  "lint-staged": {
+    "*.{js,json,css,md,ts,scss}": [
+      "tslint --project tsconfig.json --fix",
+      "prettier --write",
+      "git add"
+    ]
+  },
   "devDependencies": {
     "@types/jest": "^23.3.9",
     "@types/redux-mock-store": "^1.0.0",
     "fast-memoize": "^2.5.1",
     "jest": "^23.6.0",
+    "lint-staged": "^8.1.0",
+    "prettier": "^1.15.3",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
     "redux": "^4.0.1",
     "redux-mock-store": "^1.5.3",
     "redux-thunk": "^2.3.0",
@@ -29,7 +41,9 @@
     "rollup-plugin-sourcemaps": "^0.4.2",
     "rollup-plugin-typescript2": "^0.18.0",
     "ts-jest": "^23.10.4",
+    "ts-loader": "^5.3.3",
     "tslib": "^1.9.3",
+    "tslint": "^5.12.0",
     "typedoc": "^0.14.0",
     "typescript": "^3.1.4"
   },

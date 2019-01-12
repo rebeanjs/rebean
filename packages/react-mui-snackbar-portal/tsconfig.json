@@ -1,9 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@rebean/react-mui-snackbar-portal": ["./"]
-    }
-  }
-}

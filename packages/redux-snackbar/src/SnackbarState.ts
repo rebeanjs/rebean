@@ -6,7 +6,7 @@ import { Snackbar } from './Snackbar';
 export type SnackbarState = {
   queued: Snackbar[];
   opened: Snackbar['id'] | undefined;
-  closed: Snackbar['id'][];
+  closed: Array<Snackbar['id']>;
 };
 
 /**
@@ -20,5 +20,4 @@ export const defaultSnackbarKey = 'snackbar';
 export type DefaultSnackbarAwareState = {
   snackbar?: SnackbarState;
   [key: string]: any;
-}
-
+};

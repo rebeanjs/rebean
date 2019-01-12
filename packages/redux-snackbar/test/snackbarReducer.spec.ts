@@ -102,4 +102,6 @@ describe('SnackbarReducer', () => {
 
     expect(nextState).toBe(prevState);
   });
+
+  it('should unset snackbar id as opened and ')
 });

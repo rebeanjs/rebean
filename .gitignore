@@ -29,3 +29,6 @@ packages/**/doc
 
 # Rollup cache
 .rpt2_cache
+
+# Documentation
+/doc

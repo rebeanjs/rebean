@@ -1,17 +1,17 @@
+import { Reducer} from 'redux';
 import {
-  SnackbarActions,
   SNACKBAR_CLOSED,
   SNACKBAR_OPENED,
   SNACKBAR_QUEUED,
-  SNACKBAR_REMOVED
+  SNACKBAR_REMOVED,
+  SnackbarActions,
 } from './snackbarAction';
-import {SnackbarState, DefaultSnackbarAwareState, defaultSnackbarKey} from './SnackbarState';
-import { Reducer} from 'redux';
+import {DefaultSnackbarAwareState, defaultSnackbarKey, SnackbarState} from './SnackbarState';
 
 const initialState: SnackbarState = {
   queued: [],
   opened: undefined,
-  closed: []
+  closed: [],
 };
 
 function snackbarStateReducer(state = initialState, action: SnackbarActions): SnackbarState {
@@ -20,7 +20,7 @@ function snackbarStateReducer(state = initialState, action: SnackbarActions): Sn
       if (action.payload) {
         return {
           ...state,
-          queued: [...(state.queued || []), action.payload]
+          queued: [...(state.queued || []), action.payload],
         };
       } else {
         return state;
@@ -32,13 +32,13 @@ function snackbarStateReducer(state = initialState, action: SnackbarActions): Sn
           ...state,
           queued: action.payload!.timeoutId
             ? (state.queued || []).map(
-              snackbar =>
+              (snackbar) =>
                 snackbar.id === action.payload!.id
                   ? { ...snackbar, timeoutId: action.payload!.timeoutId }
-                  : snackbar
+                  : snackbar,
             )
             : (state.queued || []),
-          opened: action.payload.id
+          opened: action.payload.id,
         };
       } else {
         return state;
@@ -49,7 +49,7 @@ function snackbarStateReducer(state = initialState, action: SnackbarActions): Sn
         return {
           ...state,
           opened: state.opened === action.payload ? undefined : state.opened,
-          closed: [...(state.closed || []), action.payload]
+          closed: [...(state.closed || []), action.payload],
         };
       } else {
         return state;
@@ -59,8 +59,8 @@ function snackbarStateReducer(state = initialState, action: SnackbarActions): Sn
       return {
         ...state,
         opened: state.opened === action.payload ? undefined : state.opened,
-        closed: (state.closed || []).filter(id => id !== action.payload),
-        queued: (state.queued || []).filter(snackbar => snackbar.id !== action.payload)
+        closed: (state.closed || []).filter((id) => id !== action.payload),
+        queued: (state.queued || []).filter((snackbar) => snackbar.id !== action.payload),
       };
 
     default:
@@ -78,10 +78,10 @@ export function createSnackbarReducer<T extends object = any>(key: keyof T, init
   } else {
       return {
         ...(state || {} as any),
-        [key]: nextSnackbarState
+        [key]: nextSnackbarState,
       };
     }
-  }
+  };
 }
 
 export const snackbarReducer = createSnackbarReducer<DefaultSnackbarAwareState>(defaultSnackbarKey);

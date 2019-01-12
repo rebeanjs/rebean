@@ -1,26 +1,28 @@
 import { ThunkAction } from 'redux-thunk';
-import { createSnackbarSelectors } from './snackbarSelector';
 import { Snackbar } from './Snackbar';
-import { defaultSnackbarKey, DefaultSnackbarAwareState} from "./SnackbarState";
+import { createSnackbarSelectors } from './snackbarSelector';
+import { DefaultSnackbarAwareState, defaultSnackbarKey} from './SnackbarState';
 
 /**
  * Internal function to compute UUIDv4
  */
 function uuid() {
-  let uuid = '';
+  let unique = '';
 
   for (let i = 0; i < 32; i++) {
+    // tslint:disable-next-line
     const random = Math.random() * 16 | 0;
 
-    if (i == 8 || i == 12 || i == 16 || i == 20) {
-      uuid += "-"
+    if (i === 8 || i === 12 || i === 16 || i === 20) {
+      unique += '-';
     }
-    uuid += (i == 12 ? 4 : (i == 16 ? (random & 3 | 8) : random)).toString(16);
+
+    // tslint:disable-next-line
+    unique += (i === 12 ? 4 : (i === 16 ? (random & 3 | 8) : random)).toString(16);
   }
 
-  return uuid;
+  return unique;
 }
-
 
 export const SNACKBAR_QUEUED = '@@redux-snackbar/SNACKBAR_QUEUED';
 export type SnackbarQueuedAction = {
@@ -34,13 +36,11 @@ export type SnackbarOpenedAction = {
   payload?: { id: Snackbar['id']; timeoutId?: any };
 };
 
-
 export const SNACKBAR_CLOSED = '@@redux-snackbar/SNACKBAR_CLOSED';
 export type SnackbarClosedAction = {
   type: typeof SNACKBAR_CLOSED;
   payload?: Snackbar['id'];
 };
-
 
 export const SNACKBAR_REMOVED = '@@redux-snackbar/SNACKBAR_REMOVED';
 export type SnackbarRemovedAction = {
@@ -59,15 +59,16 @@ export function createSnackbarActions<T extends object = any>(key: keyof T) {
     getNextSnackbar,
     getSnackbar,
     isSnackbarOpened,
-    isSnackbarUnique
+    isSnackbarUnique,
   } = createSnackbarSelectors(key);
 
+  // tslint:disable:no-shadowed-variable
   /**
    * Creates action that adds new snackbar to the queue (we should display only one snackbar at once).
    */
   const snackbarQueued = (snackbar: Snackbar): SnackbarQueuedAction => ({
     type: SNACKBAR_QUEUED,
-    payload: snackbar
+    payload: snackbar,
   });
 
   /**
@@ -75,7 +76,7 @@ export function createSnackbarActions<T extends object = any>(key: keyof T) {
    */
   const snackbarOpened = (id: Snackbar['id'], timeoutId?: any): SnackbarOpenedAction => ({
     type: SNACKBAR_OPENED,
-    payload: { id, timeoutId }
+    payload: { id, timeoutId },
   });
 
   /**
@@ -83,7 +84,7 @@ export function createSnackbarActions<T extends object = any>(key: keyof T) {
    */
   const snackbarClosed = (id: Snackbar['id']): SnackbarClosedAction => ({
     type: SNACKBAR_CLOSED,
-    payload: id
+    payload: id,
   });
 
   /**
@@ -91,7 +92,7 @@ export function createSnackbarActions<T extends object = any>(key: keyof T) {
    */
   const snackbarRemoved = (id: Snackbar['id']): SnackbarRemovedAction => ({
     type: SNACKBAR_REMOVED,
-    payload: id
+    payload: id,
   });
 
   /**
@@ -100,10 +101,10 @@ export function createSnackbarActions<T extends object = any>(key: keyof T) {
   const openSnackbar = (
     message: string,
     timeout = 5000,
-    unique = true
+    unique = true,
   ): ThunkAction<Snackbar['id'] | undefined, any, any, SnackbarActions> => (
     dispatch,
-    getState
+    getState,
   ) => {
     if (unique && !isSnackbarUnique(message)(getState())) {
       // don't display snackbar if the current one is the same
@@ -130,7 +131,7 @@ export function createSnackbarActions<T extends object = any>(key: keyof T) {
    * (this action handles closing, removing and taking next snackbar from the queue).
    */
   const closeSnackbar = (
-    id: Snackbar['id']
+    id: Snackbar['id'],
   ): ThunkAction<void, any, any, SnackbarActions> => (dispatch, getState) => {
     const snackbar = getSnackbar(id)(getState());
 
@@ -156,7 +157,7 @@ export function createSnackbarActions<T extends object = any>(key: keyof T) {
    * Create thunk action that schedules snackbar lifecycle (opening and closing).
    */
   const scheduleSnackbar = (
-    id: Snackbar['id']
+    id: Snackbar['id'],
   ): ThunkAction<any, any, any, SnackbarActions> => (dispatch, getState) => {
     const snackbar = getSnackbar(id)(getState());
     let timeoutId: any;
@@ -165,7 +166,7 @@ export function createSnackbarActions<T extends object = any>(key: keyof T) {
       if (snackbar.timeout) {
         timeoutId = setTimeout(
           () => dispatch(closeSnackbar(id)),
-          snackbar.timeout
+          snackbar.timeout,
         );
       }
 
@@ -174,6 +175,7 @@ export function createSnackbarActions<T extends object = any>(key: keyof T) {
 
     return timeoutId;
   };
+  // tslint:enable:no-shadowed-variable
 
   return {
     snackbarQueued,
@@ -181,8 +183,8 @@ export function createSnackbarActions<T extends object = any>(key: keyof T) {
     snackbarClosed,
     snackbarRemoved,
     openSnackbar,
-    closeSnackbar
-  }
+    closeSnackbar,
+  };
 }
 
 const {
@@ -191,7 +193,7 @@ const {
   snackbarClosed,
   snackbarRemoved,
   openSnackbar,
-  closeSnackbar
+  closeSnackbar,
 } = createSnackbarActions<DefaultSnackbarAwareState>(defaultSnackbarKey);
 
 export {
@@ -200,5 +202,5 @@ export {
   snackbarClosed,
   snackbarRemoved,
   openSnackbar,
-  closeSnackbar
-}
+  closeSnackbar,
+};
