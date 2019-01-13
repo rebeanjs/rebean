@@ -1,5 +1,5 @@
 {
-  "name": "rebean",
+  "name": "rebean-redux",
   "version": "0.0.1",
   "description": "React and Redux reusable beans",
   "main": "index.js",
