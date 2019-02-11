@@ -1,4 +1,3 @@
-import { Reducer } from 'redux';
 import {
   SNACKBAR_CLOSED,
   SNACKBAR_OPENED,
@@ -6,19 +5,15 @@ import {
   SNACKBAR_REMOVED,
   SnackbarActions,
 } from './snackbarAction';
-import {
-  DefaultSnackbarAwareState,
-  defaultSnackbarKey,
-  SnackbarState,
-} from './SnackbarState';
+import { SnackbarState } from './SnackbarState';
 
-const snackbarInitialState: SnackbarState = {
+export const snackbarInitialState: SnackbarState = {
   queued: [],
   opened: undefined,
   closed: [],
 };
 
-function snackbarStateReducer(
+export function snackbarReducer(
   state = snackbarInitialState,
   action: SnackbarActions,
 ): SnackbarState {
@@ -75,26 +70,3 @@ function snackbarStateReducer(
       return state;
   }
 }
-
-export function createSnackbarReducer<T extends object = any>(
-  key: keyof T,
-  initialState?: T,
-): Reducer<T> {
-  return (state: T | undefined = initialState, action: SnackbarActions) => {
-    const prevSnackbarState: SnackbarState = (state || ({} as T))[key] as any;
-    const nextSnackbarState = snackbarStateReducer(prevSnackbarState, action);
-
-    if (prevSnackbarState === nextSnackbarState) {
-      return state;
-    } else {
-      return {
-        ...(state || ({} as any)),
-        [key]: nextSnackbarState,
-      };
-    }
-  };
-}
-
-export const snackbarReducer = createSnackbarReducer<DefaultSnackbarAwareState>(
-  defaultSnackbarKey,
-);
