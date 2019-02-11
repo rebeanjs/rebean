@@ -1,6 +1,6 @@
 {
   "name": "rebean-redux",
-  "version": "0.0.1",
+  "version": "0.0.0-development",
   "description": "React and Redux reusable beans",
   "main": "index.js",
   "repository": "git@github.com:rebeanjs/rebean.git",
@@ -10,57 +10,50 @@
     "build": "rollup -c",
     "test": "jest",
     "lint": "tslint --project tsconfig.base.json",
-    "format": "prettier --write packages/**/src/**/*.{js,json,css,md,ts,scss}",
-    "doc": "typedoc --out doc/api packages/ --mode file"
+    "format": "prettier --write packages/**/src/**/*.{json,md,ts,tsx}",
+    "doc": "typedoc --out doc/api packages/ --mode file",
+    "commit": "npm run lint -- --fix && pretty-quick --staged && npm run test && git add -A && npx git-cz",
+    "semantic-release": "lerna exec --concurrency 1 -- npx --no-install semantic-release -e semantic-release-monorepo"
   },
   "private": true,
   "workspaces": [
     "packages/*"
   ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "lint-staged"
-    }
-  },
-  "lint-staged": {
-    "*.{js,json,css,md,scss}": [
-      "prettier --write",
-      "git add"
-    ],
-    "*.{ts,tsx}": [
-      "tslint --project tsconfig.base.json --fix",
-      "prettier --write",
-      "git add"
-    ]
-  },
-  "prettier": {
-    "singleQuote": true,
-    "trailingComma": "all"
+  "dependencies": {
+    "@rebean/redux-snackbar": "file:packages/redux-snackbar"
   },
   "devDependencies": {
-    "@types/jest": "^23.3.9",
+    "@commitlint/config-conventional": "^7.5.0",
+    "@types/jest": "^24.0.0",
     "@types/redux-mock-store": "^1.0.0",
+    "@types/uuid": "^3.4.4",
+    "commitlint": "^7.5.2",
+    "cz-lerna-changelog": "^2.0.2",
     "fast-memoize": "^2.5.1",
     "husky": "^1.3.1",
-    "jest": "^23.6.0",
-    "lint-staged": "^8.1.0",
-    "prettier": "^1.15.3",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0",
+    "jest": "^23.0.0",
+    "lerna": "^3.11.0",
+    "lint-staged": "^8.1.3",
+    "prettier": "^1.16.4",
+    "pretty-quick": "^1.10.0",
+    "react": "^16.8.1",
+    "react-dom": "^16.8.1",
     "redux": "^4.0.1",
     "redux-mock-store": "^1.5.3",
     "redux-thunk": "^2.3.0",
     "reselect": "^4.0.0",
-    "rollup": "^1.0.1",
+    "rollup": "^1.1.2",
     "rollup-plugin-cleaner": "^0.2.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
-    "rollup-plugin-typescript2": "^0.18.0",
+    "rollup-plugin-typescript2": "^0.19.2",
+    "semantic-release": "^15.13.3",
+    "semantic-release-monorepo": "^6.1.1",
     "ts-jest": "^23.10.4",
     "ts-loader": "^5.3.3",
     "tslib": "^1.9.3",
     "tslint": "^5.12.0",
     "typedoc": "^0.14.0",
-    "typescript": "^3.1.4"
+    "typescript": "^3.3.3"
   },
   "jest": {
     "preset": "ts-jest",
@@ -73,6 +66,20 @@
           ]
         }
       }
+    }
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run lint -- --fix && pretty-quick --staged && npm run test",
+      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS"
+    }
+  },
+  "release": {
+    "branch": "next"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-lerna-changelog"
     }
   }
 }

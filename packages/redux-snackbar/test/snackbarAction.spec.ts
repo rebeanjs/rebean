@@ -1,12 +1,12 @@
 import {
   closeSnackbar,
-  DefaultSnackbarAwareState,
   openSnackbar,
   SNACKBAR_CLOSED,
   SNACKBAR_OPENED,
   SNACKBAR_QUEUED,
   SNACKBAR_REMOVED,
   snackbarClosed,
+  SnackbarMountedState,
   snackbarOpened,
   snackbarQueued,
   snackbarRemoved,
@@ -87,7 +87,7 @@ describe('SnackbarAction', () => {
   it('should queue and schedule snackbar on openSnackbar action', () => {
     expect(openSnackbar).toBeDefined();
 
-    let state: DefaultSnackbarAwareState | undefined;
+    let state: SnackbarMountedState | undefined;
     const store = mockStore(() => state);
 
     const id = store.dispatch(openSnackbar('Test message', 5000));
@@ -162,7 +162,7 @@ describe('SnackbarAction', () => {
   });
 
   it('should not queue and schedule snackbar on openSnackbar action if snackbar is not unique', () => {
-    let state: DefaultSnackbarAwareState | undefined;
+    let state: SnackbarMountedState | undefined;
     const store = mockStore(() => state);
 
     state = {
@@ -203,7 +203,7 @@ describe('SnackbarAction', () => {
   });
 
   it('should queue and schedule snackbar on openSnackbar action even if snackbar is not unique', () => {
-    let state: DefaultSnackbarAwareState | undefined;
+    let state: SnackbarMountedState | undefined;
     const store = mockStore(() => state);
 
     state = {
@@ -240,7 +240,7 @@ describe('SnackbarAction', () => {
   });
 
   it('should not schedule snackbar immediately on openSnackbar action if some snackbar is opened', () => {
-    let state: DefaultSnackbarAwareState | undefined;
+    let state: SnackbarMountedState | undefined;
     const store = mockStore(() => state);
 
     state = {
@@ -294,7 +294,7 @@ describe('SnackbarAction', () => {
   });
 
   it('should close snackbar and schedule snackbar remove on closeSnackbar action', () => {
-    let state: DefaultSnackbarAwareState | undefined;
+    let state: SnackbarMountedState | undefined;
     const timeoutSpy = jest.fn();
     const store = mockStore(() => state);
     const timeoutId = setTimeout(timeoutSpy, 500);
@@ -333,7 +333,7 @@ describe('SnackbarAction', () => {
   });
 
   it('should schedule next snackbar on closeSnackbar action', () => {
-    let state: DefaultSnackbarAwareState | undefined;
+    let state: SnackbarMountedState | undefined;
     const store = mockStore(() => state);
 
     state = {
@@ -401,7 +401,7 @@ describe('SnackbarAction', () => {
   });
 
   it('should do nothing on closeSnackbar action if snackbar does not exists', () => {
-    let state: DefaultSnackbarAwareState | undefined;
+    let state: SnackbarMountedState | undefined;
     const store = mockStore(() => state);
 
     state = {

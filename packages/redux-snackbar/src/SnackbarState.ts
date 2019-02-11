@@ -10,14 +10,9 @@ export type SnackbarState = {
 };
 
 /**
- * Default key on which SnackbarState is mounted
- */
-export const defaultSnackbarKey = 'snackbar';
-
-/**
  * Default state that has mounted SnackbarState on snackbar key
  */
-export type DefaultSnackbarAwareState = {
+export type SnackbarMountedState = {
   snackbar?: SnackbarState;
   [key: string]: any;
 };
