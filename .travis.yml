@@ -11,16 +11,23 @@ install:
   - npm install
   - npm run build
 
+before_script:
+  - npm run lerna:prepublish
+
+script:
+  - npm run test
+
+before_deploy:
+  - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> $HOME/.npmrc 2> /dev/null
+
 deploy:
-  provider: npm
-  email: piotrek.oles@gmail.com
+  provider: script
+  script: npm run lerna:publish
   skip_cleanup: true
-  node_js: 10
-  script:
-    - npm run semantic-release
-  api_key:
-    secure: N4rzhZFDAasraLy55zgmNpEeM1OF22loWFgU8itn0jf+ukGIWDU7bjKZbyZu+L3BmYMEEVtAHCFRi+ZRUtx4s5zoQ8DKAx+F8EVueNWvML7EP08cMfdHymaWwlKukOtbNwxBdxwnGPd242yMDRR5v0VB8FDmYPea4EYwaN62myjVJAfaG8OuWqRsVGxga9uszY2NFhBKIkbMcCBQgdPy2T0gAlgGs7vbhTlZReuMVbRN9B1SJCaPTNsxeKIRKDVprzDwCe+xQEwPy+RV8jGcpmE0aU3nYpTaNS7++Y8RW+LLNzTdaY5D8hefx8RnJsS5eTXAcZ3aOttbUJSMcqTkxAl7qWu64f3EPV941QXql/6fGjbXgGQpskqRCRx59MKxu7mXvWqDNMX9fea6/NbG3CgTowqY6RGN0hghQXiFtVLlIsn/hX1hozJ1dHc4mqOTQ79sGaYlU1LDrVCBTYaTbXNJjRPVgNLq7AuVeZSXGWdHJ4hjFPVlTCsqrR8ZPUoU9uaEzO9Y0CcjGfv0/nIblASjRqtp+c1ohRgAdIa1Wo7u8SKb29i/4x01cbcON52qxHol9cbDQWjrttvGKf3hhws8Q2o4AujQnffR1TchdpETEGr5t1AINOOpoPoFoM20T5kK2pRMason/MQLPK7Fent6Tj5iOR351oiSUw1/BgQ=
   on:
+    node: 10
     tags: true
-    branch: next
-  tag: next
+
+after_success:
+  - "[[ $TRAVIS_PULL_REQUEST != 'false' ]] && npx semantic-release-github-pr --debug"
+  - npx semantic-release --debug
