@@ -4,6 +4,7 @@
   "npmClient": "npm",
   "command": {
     "publish": {
+      "allowBranch": "master",
       "ignoreChanges": ["*.md"],
       "message": "chore(release): publish"
     }
