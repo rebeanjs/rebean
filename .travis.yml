@@ -21,12 +21,17 @@ before_deploy:
   - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> $HOME/.npmrc 2> /dev/null
 
 deploy:
-  provider: script
-  script: npm run lerna:publish
-  skip_cleanup: true
-  on:
-    node: 10
-    tags: true
+  - provider: script
+    script: npm run lerna:publish
+    skip_cleanup: true
+    on:
+      node: 10
+      tags: true
+  - provider: script
+    script: npm run lerna:publish -- --npm-tag next
+    on:
+      node: 10
+      branch: master
 
 after_success:
   - "[[ $TRAVIS_PULL_REQUEST != 'false' ]] && npx semantic-release-github-pr --debug"
