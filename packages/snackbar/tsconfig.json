@@ -3,7 +3,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-      "@rebean/redux-snackbar": ["./"]
+      "@rebean/snackbar": ["./"]
     }
   }
 }

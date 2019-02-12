@@ -6,7 +6,7 @@ import {
   snackbarQueued,
   snackbarReducer,
   SnackbarState,
-} from '@rebean/redux-snackbar';
+} from '@rebean/snackbar';
 
 describe('SnackbarReducer', () => {
   let initialState: SnackbarState;

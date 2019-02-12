@@ -1,7 +1,7 @@
 {
-  "name": "rebean-redux",
+  "name": "rebean",
   "version": "0.0.0-development",
-  "description": "React and Redux reusable beans",
+  "description": "Redux and React reusable beans",
   "main": "index.js",
   "repository": "git@github.com:rebeanjs/rebean.git",
   "author": "Piotr Oleś <piotr.oles@codibly.com>",
@@ -22,7 +22,7 @@
     "packages/*"
   ],
   "dependencies": {
-    "@rebean/redux-snackbar": "file:packages/redux-snackbar"
+    "@rebean/snackbar": "file:packages/snackbar"
   },
   "devDependencies": {
     "@commitlint/config-conventional": "^7.5.0",
