@@ -7,8 +7,13 @@ stages:
   - build
   - deploy
 
+# keep the npm cache around to speed up installs
+cache:
+  directories:
+    - '$HOME/.npm'
+
 install:
-  - npm install
+  - npm ci
   - npm run build
 
 before_script:
@@ -19,7 +24,6 @@ script:
 
 before_deploy:
   - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> $HOME/.npmrc 2> /dev/null
-  - git status
 
 deploy:
   - provider: script
