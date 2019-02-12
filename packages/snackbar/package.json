@@ -1,5 +1,5 @@
 {
-  "name": "@rebean/redux-snackbar",
+  "name": "@rebean/snackbar",
   "version": "0.0.1",
   "description": "Redux snackbar bean",
   "main": "lib/index.js",
@@ -22,5 +22,8 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

@@ -10,7 +10,7 @@ import {
   snackbarOpened,
   snackbarQueued,
   snackbarRemoved,
-} from '@rebean/redux-snackbar';
+} from '@rebean/snackbar';
 import configureStore from 'redux-mock-store';
 import thunk from 'redux-thunk';
 
