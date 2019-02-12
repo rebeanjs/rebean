@@ -13,7 +13,7 @@
     "format": "prettier --write packages/**/src/**/*.{json,md,ts,tsx}",
     "doc": "typedoc --out doc/api packages/ --mode file",
     "commit": "npm run lint -- --fix && pretty-quick --staged && npm run test && git add -A && npx git-cz",
-    "lerna:version": "lerna version prerelease",
+    "lerna:version": "lerna version",
     "lerna:prepublish": "lerna run prepublish",
     "lerna:publish": "lerna publish from-git --yes"
   },
