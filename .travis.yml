@@ -19,6 +19,7 @@ script:
 
 before_deploy:
   - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> $HOME/.npmrc 2> /dev/null
+  - git update-index --assume-unchanged .npmrc
 
 deploy:
   - provider: script
