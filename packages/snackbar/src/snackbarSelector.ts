@@ -10,24 +10,24 @@ const getSnackbarState: Selector<
 
 export const getQueuedSnackbars = createSelector(
   getSnackbarState,
-  state => (state && state.queued) || [],
+  state => (state && state.queued) || []
 );
 
 export const getOpenedSnackbarId = createSelector(
   getSnackbarState,
-  state => (state && state.opened) || undefined,
+  state => (state && state.opened) || undefined
 );
 
 export const getClosedSnackbarIds = createSelector(
   getSnackbarState,
-  state => (state && state.closed) || [],
+  state => (state && state.closed) || []
 );
 
 export const getOpenedSnackbar = createSelector(
   getQueuedSnackbars,
   getOpenedSnackbarId,
   (snackbars, openedId) =>
-    snackbars.filter(snackbar => snackbar.id === openedId)[0],
+    snackbars.filter(snackbar => snackbar.id === openedId)[0]
 );
 
 export const getAwaitingSnackbars = createSelector(
@@ -40,29 +40,29 @@ export const getAwaitingSnackbars = createSelector(
       const isClosed = closedIds.indexOf(snackbar.id) !== -1;
 
       return !isOpened && !isClosed;
-    }),
+    })
 );
 
 export const isSnackbarOpened = createSelector(
   getOpenedSnackbarId,
-  openedId => openedId !== undefined,
+  openedId => openedId !== undefined
 );
 
 export const getNextSnackbar = createSelector(
   getAwaitingSnackbars,
-  snackbars => snackbars[0],
+  snackbars => snackbars[0]
 );
 
 export const getSnackbar = memoize((id: Snackbar['id']) =>
   createSelector(
     getQueuedSnackbars,
-    snackbars => snackbars.filter(snackbar => snackbar.id === id)[0],
-  ),
+    snackbars => snackbars.filter(snackbar => snackbar.id === id)[0]
+  )
 );
 
 export const isSnackbarUnique = memoize((message: string) =>
   createSelector(
     getOpenedSnackbar,
-    snackbar => !snackbar || snackbar.message !== message,
-  ),
+    snackbar => !snackbar || snackbar.message !== message
+  )
 );

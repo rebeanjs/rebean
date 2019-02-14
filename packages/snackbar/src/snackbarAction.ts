@@ -4,7 +4,7 @@ import {
   getNextSnackbar,
   getSnackbar,
   isSnackbarOpened,
-  isSnackbarUnique,
+  isSnackbarUnique
 } from './snackbarSelector';
 
 /**
@@ -23,7 +23,7 @@ function uuid() {
 
     // tslint:disable-next-line
     unique += (i === 12 ? 4 : i === 16 ? (random & 3) | 8 : random).toString(
-      16,
+      16
     );
   }
 
@@ -40,7 +40,7 @@ export type SnackbarQueuedAction = {
 };
 export const snackbarQueued = (snackbar: Snackbar): SnackbarQueuedAction => ({
   type: SNACKBAR_QUEUED,
-  payload: snackbar,
+  payload: snackbar
 });
 
 /**
@@ -53,10 +53,10 @@ export type SnackbarOpenedAction = {
 };
 export const snackbarOpened = (
   id: Snackbar['id'],
-  timeoutId?: any,
+  timeoutId?: any
 ): SnackbarOpenedAction => ({
   type: SNACKBAR_OPENED,
-  payload: { id, timeoutId },
+  payload: { id, timeoutId }
 });
 
 /**
@@ -69,7 +69,7 @@ export type SnackbarClosedAction = {
 };
 export const snackbarClosed = (id: Snackbar['id']): SnackbarClosedAction => ({
   type: SNACKBAR_CLOSED,
-  payload: id,
+  payload: id
 });
 
 /**
@@ -82,7 +82,7 @@ export type SnackbarRemovedAction = {
 };
 export const snackbarRemoved = (id: Snackbar['id']): SnackbarRemovedAction => ({
   type: SNACKBAR_REMOVED,
-  payload: id,
+  payload: id
 });
 
 /**
@@ -91,10 +91,10 @@ export const snackbarRemoved = (id: Snackbar['id']): SnackbarRemovedAction => ({
 export const openSnackbar = (
   message: string,
   timeout = 5000,
-  unique = true,
+  unique = true
 ): ThunkAction<Snackbar['id'] | undefined, any, any, SnackbarActions> => (
   dispatch,
-  getState,
+  getState
 ) => {
   if (unique && !isSnackbarUnique(message)(getState())) {
     // don't display snackbar if the current one is the same
@@ -121,7 +121,7 @@ export const openSnackbar = (
  * (this action handles closing, removing and taking next snackbar from the queue).
  */
 export const closeSnackbar = (
-  id: Snackbar['id'],
+  id: Snackbar['id']
 ): ThunkAction<void, any, any, SnackbarActions> => (dispatch, getState) => {
   const snackbar = getSnackbar(id)(getState());
 
@@ -147,7 +147,7 @@ export const closeSnackbar = (
  * Create thunk action that schedules snackbar lifecycle (opening and closing).
  */
 const scheduleSnackbar = (
-  id: Snackbar['id'],
+  id: Snackbar['id']
 ): ThunkAction<any, any, any, SnackbarActions> => (dispatch, getState) => {
   const snackbar = getSnackbar(id)(getState());
   let timeoutId: any;
@@ -156,7 +156,7 @@ const scheduleSnackbar = (
     if (snackbar.timeout) {
       timeoutId = setTimeout(
         () => dispatch(closeSnackbar(id)),
-        snackbar.timeout,
+        snackbar.timeout
       );
     }
 

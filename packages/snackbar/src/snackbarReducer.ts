@@ -3,26 +3,26 @@ import {
   SNACKBAR_OPENED,
   SNACKBAR_QUEUED,
   SNACKBAR_REMOVED,
-  SnackbarActions,
+  SnackbarActions
 } from './snackbarAction';
 import { SnackbarState } from './SnackbarState';
 
 export const snackbarInitialState: SnackbarState = {
   queued: [],
   opened: undefined,
-  closed: [],
+  closed: []
 };
 
 export function snackbarReducer(
   state = snackbarInitialState,
-  action: SnackbarActions,
+  action: SnackbarActions
 ): SnackbarState {
   switch (action.type) {
     case SNACKBAR_QUEUED:
       if (action.payload) {
         return {
           ...state,
-          queued: [...(state.queued || []), action.payload],
+          queued: [...(state.queued || []), action.payload]
         };
       } else {
         return state;
@@ -36,10 +36,10 @@ export function snackbarReducer(
             ? (state.queued || []).map(snackbar =>
                 snackbar.id === action.payload!.id
                   ? { ...snackbar, timeoutId: action.payload!.timeoutId }
-                  : snackbar,
+                  : snackbar
               )
             : state.queued || [],
-          opened: action.payload.id,
+          opened: action.payload.id
         };
       } else {
         return state;
@@ -50,7 +50,7 @@ export function snackbarReducer(
         return {
           ...state,
           opened: state.opened === action.payload ? undefined : state.opened,
-          closed: [...(state.closed || []), action.payload],
+          closed: [...(state.closed || []), action.payload]
         };
       } else {
         return state;
@@ -62,8 +62,8 @@ export function snackbarReducer(
         opened: state.opened === action.payload ? undefined : state.opened,
         closed: (state.closed || []).filter(id => id !== action.payload),
         queued: (state.queued || []).filter(
-          snackbar => snackbar.id !== action.payload,
-        ),
+          snackbar => snackbar.id !== action.payload
+        )
       };
 
     default:

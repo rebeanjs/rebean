@@ -1,3 +1,5 @@
+import configureStore from 'redux-mock-store';
+import thunk from 'redux-thunk';
 import {
   closeSnackbar,
   openSnackbar,
@@ -9,10 +11,8 @@ import {
   SnackbarMountedState,
   snackbarOpened,
   snackbarQueued,
-  snackbarRemoved,
-} from '@rebean/snackbar';
-import configureStore from 'redux-mock-store';
-import thunk from 'redux-thunk';
+  snackbarRemoved
+} from '../src';
 
 jest.useFakeTimers();
 
@@ -24,30 +24,30 @@ describe('SnackbarAction', () => {
     expect(
       snackbarQueued({
         id: 'some_unique_id',
-        message: 'Hello world',
-      }),
+        message: 'Hello world'
+      })
     ).toEqual({
       type: '@@redux-snackbar/SNACKBAR_QUEUED',
       payload: {
         id: 'some_unique_id',
-        message: 'Hello world',
-      },
+        message: 'Hello world'
+      }
     });
     expect(
       snackbarQueued({
         id: 'some_unique_id',
         message: 'Hello world',
         timeout: 5000,
-        timeoutId: 6432,
-      }),
+        timeoutId: 6432
+      })
     ).toEqual({
       type: '@@redux-snackbar/SNACKBAR_QUEUED',
       payload: {
         id: 'some_unique_id',
         message: 'Hello world',
         timeout: 5000,
-        timeoutId: 6432,
-      },
+        timeoutId: 6432
+      }
     });
   });
 
@@ -56,15 +56,15 @@ describe('SnackbarAction', () => {
     expect(snackbarOpened('some_unique_id')).toEqual({
       type: '@@redux-snackbar/SNACKBAR_OPENED',
       payload: {
-        id: 'some_unique_id',
-      },
+        id: 'some_unique_id'
+      }
     });
     expect(snackbarOpened('another_unique_id', 6432)).toEqual({
       type: '@@redux-snackbar/SNACKBAR_OPENED',
       payload: {
         id: 'another_unique_id',
-        timeoutId: 6432,
-      },
+        timeoutId: 6432
+      }
     });
   });
 
@@ -72,7 +72,7 @@ describe('SnackbarAction', () => {
     expect(snackbarClosed).toBeDefined();
     expect(snackbarClosed('another_unique_id')).toEqual({
       type: '@@redux-snackbar/SNACKBAR_CLOSED',
-      payload: 'another_unique_id',
+      payload: 'another_unique_id'
     });
   });
 
@@ -80,7 +80,7 @@ describe('SnackbarAction', () => {
     expect(snackbarRemoved).toBeDefined();
     expect(snackbarRemoved('some_unique_id')).toEqual({
       type: '@@redux-snackbar/SNACKBAR_REMOVED',
-      payload: 'some_unique_id',
+      payload: 'some_unique_id'
     });
   });
 
@@ -94,13 +94,13 @@ describe('SnackbarAction', () => {
     const snackbar = {
       id,
       message: 'Test message',
-      timeout: 5000,
+      timeout: 5000
     };
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_QUEUED,
-        payload: snackbar,
-      },
+        payload: snackbar
+      }
     ]);
 
     store.clearActions();
@@ -108,8 +108,8 @@ describe('SnackbarAction', () => {
       snackbar: {
         queued: [snackbar],
         opened: undefined,
-        closed: [],
-      },
+        closed: []
+      }
     };
     jest.runOnlyPendingTimers();
     expect(store.getActions()).toEqual([
@@ -117,9 +117,9 @@ describe('SnackbarAction', () => {
         type: SNACKBAR_OPENED,
         payload: {
           id: snackbar.id,
-          timeoutId: expect.anything(),
-        },
-      },
+          timeoutId: expect.anything()
+        }
+      }
     ]);
 
     store.clearActions();
@@ -127,8 +127,8 @@ describe('SnackbarAction', () => {
       snackbar: {
         queued: [snackbar],
         opened: snackbar.id,
-        closed: [],
-      },
+        closed: []
+      }
     };
     jest.advanceTimersByTime(3000);
     expect(store.getActions()).toEqual([]);
@@ -137,8 +137,8 @@ describe('SnackbarAction', () => {
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_CLOSED,
-        payload: snackbar.id,
-      },
+        payload: snackbar.id
+      }
     ]);
 
     store.clearActions();
@@ -146,8 +146,8 @@ describe('SnackbarAction', () => {
       snackbar: {
         queued: [snackbar],
         opened: undefined,
-        closed: [snackbar.id],
-      },
+        closed: [snackbar.id]
+      }
     };
     jest.advanceTimersByTime(500);
     expect(store.getActions()).toEqual([]);
@@ -156,8 +156,8 @@ describe('SnackbarAction', () => {
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_REMOVED,
-        payload: snackbar.id,
-      },
+        payload: snackbar.id
+      }
     ]);
   });
 
@@ -171,17 +171,17 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000,
+            timeout: 3000
           },
           {
             id: '2',
             message: 'Another message',
-            timeout: 2000,
-          },
+            timeout: 2000
+          }
         ],
         opened: '1',
-        closed: [],
-      },
+        closed: []
+      }
     };
 
     const firstId = store.dispatch(openSnackbar('Some message'));
@@ -196,9 +196,9 @@ describe('SnackbarAction', () => {
         payload: {
           id: secondId,
           message: 'Another message',
-          timeout: 5000,
-        },
-      },
+          timeout: 5000
+        }
+      }
     ]);
   });
 
@@ -212,17 +212,17 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000,
+            timeout: 3000
           },
           {
             id: '2',
             message: 'Another message',
-            timeout: 2000,
-          },
+            timeout: 2000
+          }
         ],
         opened: '1',
-        closed: [],
-      },
+        closed: []
+      }
     };
 
     const firstId = store.dispatch(openSnackbar('Some message', 5000, false));
@@ -233,9 +233,9 @@ describe('SnackbarAction', () => {
         payload: {
           id: firstId,
           message: 'Some message',
-          timeout: 5000,
-        },
-      },
+          timeout: 5000
+        }
+      }
     ]);
   });
 
@@ -249,12 +249,12 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000,
-          },
+            timeout: 3000
+          }
         ],
         opened: '1',
-        closed: [],
-      },
+        closed: []
+      }
     };
 
     const firstId = store.dispatch(openSnackbar('Another message'));
@@ -265,9 +265,9 @@ describe('SnackbarAction', () => {
         payload: {
           id: firstId,
           message: 'Another message',
-          timeout: 5000,
-        },
-      },
+          timeout: 5000
+        }
+      }
     ]);
 
     store.clearActions();
@@ -277,17 +277,17 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000,
+            timeout: 3000
           },
           {
             id: firstId,
             message: 'Another message',
-            timeout: 5000,
-          },
+            timeout: 5000
+          }
         ],
         opened: '1',
-        closed: [],
-      },
+        closed: []
+      }
     };
     jest.runOnlyPendingTimers();
     expect(store.getActions()).toEqual([]);
@@ -306,19 +306,19 @@ describe('SnackbarAction', () => {
             id: '1',
             message: 'Some message',
             timeout: 3000,
-            timeoutId,
-          },
+            timeoutId
+          }
         ],
         opened: '1',
-        closed: [],
-      },
+        closed: []
+      }
     };
     store.dispatch(closeSnackbar('1'));
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_CLOSED,
-        payload: '1',
-      },
+        payload: '1'
+      }
     ]);
 
     store.clearActions();
@@ -327,8 +327,8 @@ describe('SnackbarAction', () => {
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_REMOVED,
-        payload: '1',
-      },
+        payload: '1'
+      }
     ]);
   });
 
@@ -342,30 +342,30 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000,
+            timeout: 3000
           },
           {
             id: '2',
-            message: 'Another message',
-          },
+            message: 'Another message'
+          }
         ],
         opened: '1',
-        closed: [],
-      },
+        closed: []
+      }
     };
     store.dispatch(closeSnackbar('1'));
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_CLOSED,
-        payload: '1',
+        payload: '1'
       },
       {
         type: SNACKBAR_OPENED,
         payload: {
           id: '2',
-          timeoutId: undefined,
-        },
-      },
+          timeoutId: undefined
+        }
+      }
     ]);
 
     store.clearActions();
@@ -375,24 +375,24 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000,
+            timeout: 3000
           },
           {
             id: '2',
             message: 'Another message',
-            timeout: 5000,
-          },
+            timeout: 5000
+          }
         ],
         opened: '2',
-        closed: ['1'],
-      },
+        closed: ['1']
+      }
     };
     jest.advanceTimersByTime(1000);
     expect(store.getActions()).toEqual([
       {
         type: SNACKBAR_REMOVED,
-        payload: '1',
-      },
+        payload: '1'
+      }
     ]);
 
     store.clearActions();
@@ -410,12 +410,12 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000,
-          },
+            timeout: 3000
+          }
         ],
         opened: '1',
-        closed: [],
-      },
+        closed: []
+      }
     };
     store.dispatch(closeSnackbar('2'));
     expect(store.getActions()).toEqual([]);
@@ -426,12 +426,12 @@ describe('SnackbarAction', () => {
           {
             id: '1',
             message: 'Some message',
-            timeout: 3000,
-          },
+            timeout: 3000
+          }
         ],
         opened: undefined,
-        closed: [],
-      },
+        closed: []
+      }
     };
     store.dispatch(closeSnackbar('2'));
     expect(store.getActions()).toEqual([]);

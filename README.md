@@ -18,7 +18,7 @@ That's where idea of reusable redux packages comes from.
 
 ## Publish
 
-1. Lunch the `npm run lerna:version` command on the master branch.
+1. Lunch the `yarn lerna:version` command on the master branch.
 2. Push changes to the remote repository - CI will publish changes to the NPM automatically 🚀
 
 ## License

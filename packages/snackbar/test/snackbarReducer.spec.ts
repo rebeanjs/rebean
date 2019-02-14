@@ -5,8 +5,8 @@ import {
   snackbarOpened,
   snackbarQueued,
   snackbarReducer,
-  SnackbarState,
-} from '@rebean/snackbar';
+  SnackbarState
+} from '../src';
 
 describe('SnackbarReducer', () => {
   let initialState: SnackbarState;
@@ -16,12 +16,12 @@ describe('SnackbarReducer', () => {
     initialState = {
       queued: [],
       opened: undefined,
-      closed: [],
+      closed: []
     };
     snackbar = {
       id: '1',
       message: 'Test',
-      timeout: 1000,
+      timeout: 1000
     };
   });
 
@@ -33,7 +33,7 @@ describe('SnackbarReducer', () => {
     expect(nextState).toEqual({
       queued: [snackbar],
       opened: undefined,
-      closed: [],
+      closed: []
     });
   });
 
@@ -48,7 +48,7 @@ describe('SnackbarReducer', () => {
     const prevState = {
       queued: [snackbar],
       opened: undefined,
-      closed: [],
+      closed: []
     };
     const action = snackbarOpened(snackbar.id);
     const nextState = snackbarReducer(prevState, action);
@@ -56,7 +56,7 @@ describe('SnackbarReducer', () => {
     expect(nextState).toEqual({
       queued: [snackbar],
       opened: snackbar.id,
-      closed: [],
+      closed: []
     });
     expect(nextState.queued).toBe(prevState.queued);
     expect(nextState.closed).toBe(prevState.closed);
@@ -66,7 +66,7 @@ describe('SnackbarReducer', () => {
     const prevState = {
       queued: [snackbar],
       opened: undefined,
-      closed: [],
+      closed: []
     };
     const action = snackbarOpened(snackbar.id, 123);
     const nextState = snackbarReducer(prevState, action);
@@ -75,11 +75,11 @@ describe('SnackbarReducer', () => {
       queued: [
         {
           ...snackbar,
-          timeoutId: 123,
-        },
+          timeoutId: 123
+        }
       ],
       opened: snackbar.id,
-      closed: [],
+      closed: []
     });
     expect(nextState.closed).toBe(prevState.closed);
   });
