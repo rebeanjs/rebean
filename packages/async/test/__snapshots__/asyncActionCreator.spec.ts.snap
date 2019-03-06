@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`asyncActionCreator should create async pending action with proper shape using createAsyncPendingAction 1`] = `
+Object {
+  "async": "PENDING",
+  "meta": Object {
+    "useGPU": true,
+  },
+  "params": Object {
+    "x": 2,
+  },
+  "payload": 4,
+  "timestamp": 1000,
+  "type": "X_SQUARE",
+}
+`;
+
+exports[`asyncActionCreator should create async rejected action with proper shape using createAsyncResolvedAction 1`] = `
+Object {
+  "async": "REJECTED",
+  "error": true,
+  "meta": Object {
+    "useGPU": true,
+  },
+  "params": Object {
+    "x": -2,
+  },
+  "payload": "NEGATIVE_NUMBERS_NOT_SUPPORTED",
+  "timestamp": 1000,
+  "type": "X_SQUARE",
+}
+`;
+
+exports[`asyncActionCreator should create async resolved action with proper shape using createAsyncResolvedAction 1`] = `
+Object {
+  "async": "RESOLVED",
+  "meta": Object {
+    "useGPU": true,
+  },
+  "params": Object {
+    "x": 2,
+  },
+  "payload": 4,
+  "timestamp": 1000,
+  "type": "X_SQUARE",
+}
+`;

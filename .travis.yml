@@ -13,27 +13,27 @@ cache:
     - '$HOME/.npm'
 
 install:
-  - npm ci
-  - npm run build
+  - yarn
+  - yarn build
 
 before_script:
-  - npm run lerna:prepublish
+  - yarn lerna:prepublish
 
 script:
-  - npm run test
+  - yarn test
 
 before_deploy:
   - echo "//registry.npmjs.org/:_authToken=\${NPM_TOKEN}" >> $HOME/.npmrc 2> /dev/null
 
 deploy:
   - provider: script
-    script: npm run lerna:publish
+    script: yarn lerna:publish
     skip_cleanup: true
     on:
       node: 10
       tags: true
   - provider: script
-    script: npm run lerna:publish -- --dist-tag next
+    script: yarn lerna:publish -- --dist-tag next
     skip_cleanup: true
     on:
       node: 10

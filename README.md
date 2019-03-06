@@ -14,12 +14,23 @@ That's where idea of reusable redux packages comes from.
 
 ## Packages
 
-[@rebean/snackbar](packages/snackbar)
+- [@rebean/snackbar](packages/snackbar)
+- [@rebean/async](packages/async)
 
 ## Publish
 
-1. Lunch the `npm run lerna:version` command on the master branch.
-2. Push changes to the remote repository - CI will publish changes to the NPM automatically 🚀
+1. Checkout master branch with latest changes:
+   ```
+   git checkout master
+   git fetch origin
+   git reset --hard origin/master
+   ```
+2. Lunch the `yarn lerna:version` command.
+3. Push commit with tags to the remote repository -
+   CI will publish changes to the NPM automatically 🚀
+   ```
+   git push --follow-tags
+   ```
 
 ## License
 

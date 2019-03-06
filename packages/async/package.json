@@ -1,0 +1,28 @@
+{
+  "name": "@rebean/async",
+  "version": "0.0.2",
+  "description": "Redux async bean",
+  "main": "lib/index.js",
+  "module": "lib/index.es.js",
+  "types": "lib/index.d.ts",
+  "repository": "git@github.com:rebeanjs/rebean.git",
+  "author": "Piotr Oleś <piotrek.oles@gmail.com>",
+  "license": "MIT",
+  "files": [
+    "lib"
+  ],
+  "peerDependencies": {
+    "redux": "^4.0.1",
+    "redux-thunk": "^2.3.0"
+  },
+  "dependencies": {
+    "fast-memoize": "^2.5.1"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}
